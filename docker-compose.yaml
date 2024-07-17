@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: full-stack-ecommerce
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+    restart: always
+    networks:
+      - backend
+
+  java_app:
+    build:
+      context: ./backend/spring-boot-ecommerce
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    restart: always
+    networks:
+      - backend
+
+networks:
+  backend: {}
