@@ -13,4 +13,6 @@ import java.util.List;
 @CrossOrigin({"http://localhost:4200", "http://frontend-ecommerce:80"})
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByCategoryId(@Param("id") Long id, Pageable pageable);
+
+    List<Product> findByNameContainsIgnoreCase(@Param("name") String name, Pageable pageable);
 }
