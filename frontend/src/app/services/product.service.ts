@@ -20,14 +20,24 @@ export class ProductService {
     const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${categoryId}`;
 
 
-    return this.httpClient.get<GetResponseProducts>(searchUrl).pipe(
-      map(response => response._embedded.products)
-    );
+    return this.getProducts(searchUrl);
+  }
+
+  searchProducts(searchKeyword: string): Observable<Product[]> {
+    const searchUrl = `${this.baseUrl}/search/findByNameContainsIgnoreCase?name=${searchKeyword}`;
+
+    return this.getProducts(searchUrl);
   }
 
   getProductCategories(): Observable<ProductCategory[]> {
     return this.httpClient.get<GetResponseProductCategory>(this.categoryUrl).pipe(
       map(response => response._embedded.productCategory)
+    );
+  }
+
+  private getProducts(searchUrl: string) {
+    return this.httpClient.get<GetResponseProducts>(searchUrl).pipe(
+      map(response => response._embedded.products)
     );
   }
 }
